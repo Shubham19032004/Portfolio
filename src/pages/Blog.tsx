@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ExternalLink, Clock, Heart } from 'lucide-react'
 import { motion } from 'framer-motion'
+import { SEO } from '../components/ui/SEO'
 import { Section, SectionHeading } from '../components/ui/Section'
 import { Badge } from '../components/ui/Badge'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
@@ -90,6 +91,11 @@ export function Blog() {
 
   return (
     <main className="pt-14">
+      <SEO
+        title="Blog"
+        description="Writing about Go, distributed systems, container runtimes, and building things from the ground up."
+        path="/blog"
+      />
       <Section>
         <motion.div
           initial={{ opacity: 0, y: 16 }}

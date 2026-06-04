@@ -7,6 +7,7 @@ export const personal = {
   github: 'https://github.com/Shubham19032004',
   linkedin: 'https://linkedin.com/in/shubham-nainwal',
   devto: 'https://dev.to/shubham_nainwal_4cf0dbffb',
+  resume: 'https://drive.google.com/file/d/1_1jaMTLRICwbytrDtqCvFx-r0aO6V01w/view?usp=sharing',
   githubUsername: 'Shubham19032004',
   about: `I'm a backend engineer focused on Go, distributed systems, and production-grade infrastructure.
 I've built real-time monitoring pipelines, container runtimes from scratch, and high-throughput data systems,

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { SEO } from '../components/ui/SEO'
 import { GitPullRequest, Star, ExternalLink, GitMerge } from 'lucide-react'
 import { GithubIcon } from '../components/ui/Icons'
 import { Section, SectionHeading } from '../components/ui/Section'
@@ -60,6 +61,11 @@ function PRCard({ pr, index }: { pr: PullRequest; index: number }) {
 export function OpenSource() {
   return (
     <main className="pt-14">
+      <SEO
+        title="Open Source"
+        description="Open source contributions to Grafana and personal projects including gocount, a container runtime built from scratch in Go."
+        path="/open-source"
+      />
       <Section>
         <motion.div
           initial={{ opacity: 0, y: 16 }}

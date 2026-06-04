@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { Mail, FileText, ArrowDown } from 'lucide-react'
+import { Mail, FileText, ArrowDown, Download } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '../ui/Icons'
 import { personal } from '../../data/resume'
 
@@ -62,6 +62,15 @@ export function Hero() {
           >
             <FileText size={14} />
             Blog
+          </a>
+          <a
+            href={personal.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
+          >
+            <Download size={14} />
+            Resume
           </a>
         </div>
       </motion.div>
