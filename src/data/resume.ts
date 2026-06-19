@@ -49,7 +49,7 @@ export const projects: Project[] = [
     subtitle: 'Lightweight Container Runtime',
     tech: 'Go, Linux Kernel',
     period: 'Oct – Nov 2025',
-    github: 'https://github.com/Shubham19032004/gocount',
+    github: 'https://github.com/Shubham19032004/go-count',
     bullets: [
       'Built a fully functional container runtime from scratch in Go, implementing the core isolation mechanisms that underpin Docker without using Docker or any container library.',
       'Implemented process isolation via Linux namespaces (UTS, PID, mount, network) with CLONE_NEW* flags; filesystem isolation using pivot_root with per-container rootfs directories.',
@@ -80,6 +80,36 @@ export const openSourceContributions: OpenSourceContribution[] = [
 
 export const pullRequests: PullRequest[] = [
   {
+    title: 'Provisioning: reject GitHub repository when connection has webhook disabled but repository does not',
+    description:
+      'Adds admission-time validation that rejects a GitHub repository create or update if the referenced connection has webhook disabled but the repository does not, preventing misconfigured states at creation time.',
+    repo: 'grafana/grafana',
+    org: 'Grafana Labs',
+    url: 'https://github.com/grafana/grafana/pull/126757',
+    status: 'merged',
+    mergedAt: 'Jun 2026',
+  },
+  {
+    title: 'Provisioning: skip webhook registration for GitHub repos when webhookDisabled is set',
+    description:
+      'Added a webhookDisabled field to GitHubRepositoryConfig. When set to true, Grafana skips webhook registration entirely for that repository and falls back to polling.',
+    repo: 'grafana/grafana',
+    org: 'Grafana Labs',
+    url: 'https://github.com/grafana/grafana/pull/126330',
+    status: 'merged',
+    mergedAt: 'Jun 2026',
+  },
+  {
+    title: 'Provisioning: allow GitHub App connection without webhook permissions',
+    description:
+      'Fixed a validation issue where Grafana hard-coded webhook permission requirements, blocking GitHub App connections that were intentionally set up without webhook access.',
+    repo: 'grafana/grafana',
+    org: 'Grafana Labs',
+    url: 'https://github.com/grafana/grafana/pull/126129',
+    status: 'merged',
+    mergedAt: 'Jun 2026',
+  },
+  {
     title: 'VQB: Add selected columns to GROUP BY dropdown',
     description:
       'Fixed an inconsistency in the Visual Query Builder where the GROUP BY dropdown did not show already-selected columns as options, while ORDER BY did. This made it impossible to group by selected columns.',
@@ -87,7 +117,7 @@ export const pullRequests: PullRequest[] = [
     org: 'Grafana Labs',
     url: 'https://github.com/grafana/grafana/pull/106391',
     status: 'merged',
-    mergedAt: 'Jun 2025',
+    mergedAt: 'May 2026',
   },
 ]
 

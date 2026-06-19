@@ -152,7 +152,7 @@ export function OpenSource() {
             Personal Projects
           </h2>
           <a
-            href={`https://github.com/${personal.githubUsername}/gocount`}
+            href={`https://github.com/${personal.githubUsername}/go-count`}
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-start gap-4 rounded-xl border border-zinc-200 dark:border-zinc-800 p-5 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors"
