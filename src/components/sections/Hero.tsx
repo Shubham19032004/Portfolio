@@ -8,8 +8,8 @@ export function Hero() {
     <section className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 max-w-3xl mx-auto pt-14 overflow-hidden">
 
       {/* Light mode subtle gradient, dark mode handled by StarField */}
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-sky-50/60 to-transparent dark:hidden" />
-      <div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-sky-500/8 blur-[120px] pointer-events-none dark:bg-sky-500/10" />
+      <div className="absolute inset-0 -z-10   to-transparent dark:hidden" />
+      <div className="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full blur-[120px] pointer-events-none" />
 
       <motion.div
         initial={{ opacity: 0, y: 28 }}
