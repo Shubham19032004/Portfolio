@@ -9,13 +9,19 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Set background on html so the whole viewport is covered, including overscroll */
+  html {
+    background-color: #ffffff;
+  }
+
+  .dark html {
+    background-color: #09090b;
+  }
+
   body {
     margin: 0;
     padding: 0;
-  }
-
-  .dark body {
-    background-color: #09090b;
+    background: transparent;
   }
 
   ::selection {
