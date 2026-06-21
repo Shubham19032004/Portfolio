@@ -14,7 +14,7 @@ export function Footer() {
             href={personal.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:scale-110"
             aria-label="GitHub"
           >
             <GithubIcon size={16} />
@@ -23,7 +23,7 @@ export function Footer() {
             href={personal.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:scale-110"
             aria-label="LinkedIn"
           >
             <LinkedinIcon size={16} />
@@ -32,7 +32,7 @@ export function Footer() {
             href={personal.devto}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+            className="p-2 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-all duration-200 hover:scale-110"
             aria-label="Dev.to"
           >
             <FileText size={16} />

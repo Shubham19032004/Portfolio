@@ -10,7 +10,7 @@ export function Section({ id, children, className = '' }: Props) {
   return (
     <section
       id={id}
-      className={`py-20 px-4 sm:px-6 max-w-3xl mx-auto ${className}`}
+      className={`py-24 px-4 sm:px-6 max-w-3xl mx-auto ${className}`}
     >
       {children}
     </section>
@@ -23,7 +23,7 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ children }: SectionHeadingProps) {
   return (
-    <h2 className="text-xs font-mono font-medium uppercase tracking-widest text-zinc-400 dark:text-zinc-500 mb-8">
+    <h2 className="text-xs font-mono font-semibold uppercase tracking-widest text-sky-500 mb-10">
       {children}
     </h2>
   )

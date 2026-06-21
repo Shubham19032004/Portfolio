@@ -7,9 +7,9 @@ export function About() {
     <Section id="about">
       <AnimatedSection>
         <SectionHeading>About</SectionHeading>
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-2xl">
           {personal.about.split('\n').filter(Boolean).map((para, i) => (
-            <p key={i} className="text-zinc-600 dark:text-zinc-400 leading-relaxed text-[15px]">
+            <p key={i} className="text-zinc-400 leading-relaxed text-[15px]">
               {para.trim()}
             </p>
           ))}
