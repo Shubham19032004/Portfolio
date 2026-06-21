@@ -12,7 +12,7 @@ export function Home() {
     <main>
       <SEO path="/" />
       <Hero />
-      <div className="border-t border-zinc-100 dark:border-zinc-900">
+      <div className="border-t border-zinc-100 dark:border-zinc-800/50">
         <About />
         <Experience />
         <Projects />

@@ -117,7 +117,7 @@ export const pullRequests: PullRequest[] = [
     org: 'Grafana Labs',
     url: 'https://github.com/grafana/grafana/pull/106391',
     status: 'merged',
-    mergedAt: 'May 2026',
+  mergedAt: 'Jun 2025',
   },
 ]
 

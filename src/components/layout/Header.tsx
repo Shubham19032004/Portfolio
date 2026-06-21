@@ -34,7 +34,7 @@ export function Header({ theme, toggleTheme }: Props) {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200 dark:border-zinc-800'
+          ? 'bg-white/75 dark:bg-black/20 backdrop-blur-xl border-b border-zinc-200/60 dark:border-white/5'
           : 'bg-transparent'
       }`}
     >
@@ -52,13 +52,16 @@ export function Header({ theme, toggleTheme }: Props) {
             <Link
               key={link.to}
               to={link.to}
-              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+              className={`relative px-3 py-1.5 text-sm transition-colors group ${
                 location.pathname === link.to
                   ? 'text-zinc-900 dark:text-zinc-100 font-medium'
                   : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100'
               }`}
             >
               {link.label}
+              <span className={`absolute bottom-0.5 left-3 right-3 h-px bg-sky-500 origin-left transition-transform duration-300 ${
+                location.pathname === link.to ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+              }`} />
             </Link>
           ))}
           <div className="ml-2">
@@ -87,7 +90,7 @@ export function Header({ theme, toggleTheme }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
-            className="sm:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md"
+            className="sm:hidden border-t border-zinc-200/60 dark:border-white/5 bg-white/80 dark:bg-black/20 backdrop-blur-xl"
           >
             <nav className="max-w-3xl mx-auto px-4 py-3 flex flex-col gap-1">
               {navLinks.map(link => (

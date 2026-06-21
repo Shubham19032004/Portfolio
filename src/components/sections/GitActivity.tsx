@@ -18,9 +18,7 @@ function eventLabel(e: GitHubEvent): string {
     const msg = commits[0]?.message?.split('\n')[0] ?? 'Pushed commits'
     return `${msg} → ${e.repo.name.split('/')[1]}`
   }
-  if (e.type === 'PullRequestEvent') {
-    return `PR ${e.payload.action} → ${e.repo.name.split('/')[1]}`
-  }
+  if (e.type === 'PullRequestEvent') return `PR ${e.payload.action} → ${e.repo.name.split('/')[1]}`
   if (e.type === 'WatchEvent') return `Starred ${e.repo.name}`
   if (e.type === 'CreateEvent') return `Created ${e.payload.ref ?? 'branch'} in ${e.repo.name.split('/')[1]}`
   return `${e.type.replace('Event', '')} on ${e.repo.name.split('/')[1]}`
@@ -43,15 +41,11 @@ export function GitActivity() {
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${personal.githubUsername}/events/public?per_page=10`)
-      .then(r => {
-        if (!r.ok) throw new Error()
-        return r.json()
-      })
+      .then(r => { if (!r.ok) throw new Error(); return r.json() })
       .then((data: GitHubEvent[]) => {
-        const relevant = data.filter(e =>
+        setEvents(data.filter(e =>
           ['PushEvent', 'PullRequestEvent', 'CreateEvent', 'WatchEvent'].includes(e.type)
-        )
-        setEvents(relevant.slice(0, 8))
+        ).slice(0, 8))
       })
       .catch(() => setError(true))
       .finally(() => setLoading(false))
@@ -74,7 +68,7 @@ export function GitActivity() {
             ))}
           </div>
         ) : events.length === 0 ? (
-          <p className="text-sm text-zinc-400 dark:text-zinc-500">No recent public activity found.</p>
+          <p className="text-sm text-zinc-400">No recent public activity found.</p>
         ) : (
           <div className="space-y-3">
             {events.map(event => (
@@ -103,7 +97,7 @@ export function GitActivity() {
             rel="noopener noreferrer"
             className="text-xs font-mono text-sky-500 hover:text-sky-600 dark:hover:text-sky-400 transition-colors"
           >
-            View all on GitHub →
+            View all on GitHub
           </a>
         </div>
       </AnimatedSection>
