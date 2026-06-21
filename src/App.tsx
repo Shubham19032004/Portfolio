@@ -6,6 +6,7 @@ import { StarField } from './components/ui/StarField'
 import { Home } from './pages/Home'
 import { Blog } from './pages/Blog'
 import { OpenSource } from './pages/OpenSource'
+import { PongGame } from './game/PongGame'
 
 function App() {
   return (
@@ -18,6 +19,12 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/open-source" element={<OpenSource />} />
+            <Route path="/game" element={
+              <main className="pt-14 min-h-screen flex flex-col items-center justify-center px-4 gap-6">
+                <PongGame />
+                <p className="text-xs text-zinc-600 font-mono">W / S — you &nbsp;|&nbsp; Right paddle — AI</p>
+              </main>
+            } />
           </Routes>
           <Footer />
         </div>
