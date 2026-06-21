@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'Home', to: '/' },
   { label: 'Blog', to: '/blog' },
   { label: 'Open Source', to: '/open-source' },
+  { label: 'Game', to: '/game' },
 ]
 
 export function Header() {
