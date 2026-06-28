@@ -79,7 +79,7 @@ export function Blog() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    fetch('https://dev.to/api/articles?username=shubham_nainwal_4cf0dbffb&per_page=20')
+    fetch('https://dev.to/api/articles?username=shubham_nainwal_19&per_page=20')
       .then(r => {
         if (!r.ok) throw new Error()
         return r.json()
