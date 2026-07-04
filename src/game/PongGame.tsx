@@ -15,8 +15,8 @@ const AI_SPEED = PADDLE_SPEED * 0.5
 const AI_ERROR = 59       // px offset added to predicted target
 const AI_REACT_FRAMES = 18 // recalculate target only every N frames
 const WIN_SCORE = 5
-const START_SPEED = 4
-const MAX_SPEED = 7
+const START_SPEED = 2
+const MAX_SPEED = 5
 
 function predictLandingY(ball: Ball, targetX: number): number {
   if (ball.dx <= 0) return CANVAS_HEIGHT / 2
