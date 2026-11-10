@@ -27,8 +27,12 @@ interface CacheEntry {
 const TTL = 5 * 60 * 1000 // 5 minutes
 const cache = new Map<string, CacheEntry>()
 
-export function useGitHubPRs(username: string, org: string) {
-  const key = `${username}:${org}`
+/**
+ * Fetches every public PR authored by `username` to repositories they don't own,
+ * so new open source projects show up automatically.
+ */
+export function useGitHubPRs(username: string) {
+  const key = username
   const cached = cache.get(key)
   const isValid = cached && Date.now() - cached.fetchedAt < TTL
 
@@ -41,7 +45,7 @@ export function useGitHubPRs(username: string, org: string) {
   useEffect(() => {
     if (isValid) return
 
-    const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+org:${org}&sort=created&order=desc&per_page=20`
+    const url = `https://api.github.com/search/issues?q=author:${username}+type:pr+-user:${username}+is:public&sort=created&order=desc&per_page=100`
 
     fetch(url, { headers: { Accept: 'application/vnd.github+json' } })
       .then(r => {
@@ -54,7 +58,7 @@ export function useGitHubPRs(username: string, org: string) {
         setState({ prs, loading: false, error: false })
       })
       .catch(() => setState({ prs: [], loading: false, error: true }))
-  }, [key, isValid, username, org])
+  }, [key, isValid, username])
 
   return state
 }
@@ -67,6 +71,10 @@ export function prStatus(pr: GitHubPR): 'merged' | 'open' | 'closed' {
 
 export function repoName(pr: GitHubPR): string {
   return pr.repository_url.replace('https://api.github.com/repos/', '')
+}
+
+export function repoOwner(pr: GitHubPR): string {
+  return repoName(pr).split('/')[0]
 }
 
 export function formatDate(dateStr: string): string {

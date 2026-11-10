@@ -39,13 +39,18 @@ export interface GitHubEvent {
   created_at: string
 }
 
+/**
+ * Optional display info for an organisation. PRs are discovered automatically from
+ * GitHub; an entry here only adds a nicer name/description for that org.
+ */
 export interface OpenSourceContribution {
+  /** GitHub org/user login, matched case-insensitively against PR repo owners */
+  githubOrg: string
   project: string
   org: string
   description: string
   type: string
   url: string
-  icon: string
 }
 
 export interface PullRequest {
