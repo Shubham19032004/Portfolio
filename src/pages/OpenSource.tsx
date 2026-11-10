@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
 import { GitPullRequest, Star, ExternalLink, GitMerge } from 'lucide-react'
 import { GithubIcon } from '../components/ui/Icons'
@@ -6,7 +7,8 @@ import { Section, SectionHeading } from '../components/ui/Section'
 import { AnimatedSection } from '../components/ui/AnimatedSection'
 import { Badge } from '../components/ui/Badge'
 import { openSourceContributions, personal } from '../data/resume'
-import { useGitHubPRs, prStatus, repoName, formatDate, type GitHubPR } from '../hooks/useGitHubPRs'
+import { useGitHubPRs, prStatus, repoName, repoOwner, formatDate, type GitHubPR } from '../hooks/useGitHubPRs'
+import type { OpenSourceContribution } from '../types'
 
 function PRStatusBadge({ pr }: { pr: GitHubPR }) {
   const status = prStatus(pr)
@@ -70,21 +72,60 @@ function PRSkeleton() {
   )
 }
 
+interface OrgSummary {
+  login: string
+  prCount: number
+  mergedCount: number
+  info?: OpenSourceContribution
+}
+
+/** Merge orgs discovered from PRs with the optional metadata in resume data. */
+function buildOrgs(prs: GitHubPR[]): OrgSummary[] {
+  const byLogin = new Map<string, OrgSummary>()
+  const keyOf = (login: string) => login.toLowerCase()
+
+  for (const info of openSourceContributions) {
+    byLogin.set(keyOf(info.githubOrg), { login: info.githubOrg, prCount: 0, mergedCount: 0, info })
+  }
+  for (const pr of prs) {
+    const login = repoOwner(pr)
+    const entry = byLogin.get(keyOf(login)) ?? { login, prCount: 0, mergedCount: 0 }
+    entry.prCount++
+    if (prStatus(pr) === 'merged') entry.mergedCount++
+    byLogin.set(keyOf(login), entry)
+  }
+  return [...byLogin.values()].sort((a, b) => b.prCount - a.prCount)
+}
+
 export function OpenSource() {
-  const { prs, loading, error } = useGitHubPRs(personal.githubUsername, 'grafana')
+  const { prs, loading, error } = useGitHubPRs(personal.githubUsername)
+  const [activeOrg, setActiveOrg] = useState<string | null>(null)
+
+  const orgs = useMemo(() => buildOrgs(prs), [prs])
+  const visiblePRs = activeOrg
+    ? prs.filter(pr => repoOwner(pr).toLowerCase() === activeOrg.toLowerCase())
+    : prs
   const mergedCount = prs.filter(pr => prStatus(pr) === 'merged').length
+  const openCount = prs.filter(pr => prStatus(pr) === 'open').length
+  const activeOrgs = orgs.filter(o => o.prCount > 0)
+  const orgCount = loading ? openSourceContributions.length : activeOrgs.length
+
+  const filters: { login: string | null; label: string; count: number }[] = [
+    { login: null, label: 'All', count: prs.length },
+    ...activeOrgs.map(o => ({ login: o.login, label: o.info?.project ?? o.login, count: o.prCount })),
+  ]
 
   const stats = [
-    { label: 'Organisations', value: '1+', icon: GithubIcon },
+    { label: 'Organisations', value: `${orgCount}`, icon: GithubIcon },
     { label: 'PRs Merged', value: loading ? '...' : `${mergedCount}`, icon: GitMerge },
-    { label: 'Projects', value: 'Open', icon: Star },
+    { label: 'PRs Open', value: loading ? '...' : `${openCount}`, icon: Star },
   ]
 
   return (
     <main className="pt-14">
       <SEO
         title="Open Source"
-        description="Open source contributions to Grafana and personal projects including go-count, a container runtime built from scratch in Go."
+        description={`Open source contributions to ${openSourceContributions.map(c => c.project).join(', ')} and personal projects including go-count, a container runtime built from scratch in Go.`}
         path="/open-source"
       />
       <Section>
@@ -116,9 +157,32 @@ export function OpenSource() {
 
         {/* Pull Requests */}
         <AnimatedSection delay={0.1}>
-          <h2 className="text-xs font-mono uppercase tracking-widest text-sky-500 mb-6">
+          <h2 className="text-xs font-mono uppercase tracking-widest text-sky-500 mb-4">
             Pull Requests
           </h2>
+
+          {!loading && !error && filters.length > 2 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {filters.map(({ login, label, count }) => {
+                const active = activeOrg === login
+                return (
+                  <button
+                    key={login ?? 'all'}
+                    type="button"
+                    onClick={() => setActiveOrg(login)}
+                    aria-pressed={active}
+                    className={`text-xs font-mono px-3 py-1 rounded-full border transition-colors ${
+                      active
+                        ? 'border-sky-500/40 bg-sky-500/10 text-sky-400'
+                        : 'border-zinc-800 text-zinc-500 hover:text-zinc-300 hover:border-zinc-700'
+                    }`}
+                  >
+                    {label} <span className="opacity-60">{count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
 
           {loading && (
             <div className="space-y-3">
@@ -130,7 +194,7 @@ export function OpenSource() {
             <div className="rounded-xl border border-zinc-800 p-6 text-center">
               <p className="text-sm text-zinc-500 mb-3">Could not load PRs from GitHub.</p>
               <a
-                href={`https://github.com/search?q=author%3A${personal.githubUsername}+type%3Apr+org%3Agrafana&type=pullrequests`}
+                href={`https://github.com/search?q=author%3A${personal.githubUsername}+type%3Apr+-user%3A${personal.githubUsername}&type=pullrequests`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-sky-500 hover:text-sky-400 transition-colors font-mono"
@@ -146,7 +210,7 @@ export function OpenSource() {
 
           {!loading && !error && prs.length > 0 && (
             <div className="space-y-3">
-              {prs.map((pr, i) => (
+              {visiblePRs.map((pr, i) => (
                 <PRCard key={pr.id} pr={pr} index={i} />
               ))}
             </div>
@@ -159,31 +223,43 @@ export function OpenSource() {
             Organisations
           </h2>
           <div className="space-y-4">
-            {openSourceContributions.map(contrib => (
+            {orgs.map(({ login, prCount, mergedCount: merged, info }) => (
               <a
-                key={contrib.project}
-                href={contrib.url}
+                key={login}
+                href={info?.url ?? `https://github.com/${login}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start gap-4 rounded-xl border border-zinc-800 bg-zinc-900/40 p-5 hover:border-zinc-700 transition-colors card-hover"
               >
-                <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0">
-                  <GithubIcon size={18} className="text-zinc-400" />
-                </div>
+                <img
+                  src={`https://github.com/${login}.png?size=80`}
+                  alt=""
+                  loading="lazy"
+                  className="w-10 h-10 rounded-lg bg-zinc-800 shrink-0 object-cover"
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h3 className="font-semibold text-zinc-200 text-[15px] group-hover:text-sky-400 transition-colors">
-                        {contrib.project}
+                        {info?.project ?? login}
                       </h3>
-                      <p className="text-xs text-zinc-600 mb-2">{contrib.org}</p>
+                      <p className="text-xs text-zinc-600 mb-2">{info?.org ?? `github.com/${login}`}</p>
                     </div>
                     <ExternalLink size={13} className="text-zinc-600 group-hover:text-sky-500 transition-colors shrink-0 mt-0.5" />
                   </div>
-                  <p className="text-sm text-zinc-500 leading-relaxed mb-3">
-                    {contrib.description}
-                  </p>
-                  <Badge variant="brand">{contrib.type}</Badge>
+                  {info?.description && (
+                    <p className="text-sm text-zinc-500 leading-relaxed mb-3">
+                      {info.description}
+                    </p>
+                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Badge variant="brand">{info?.type ?? 'Contributor'}</Badge>
+                    {prCount > 0 && (
+                      <span className="text-xs font-mono text-zinc-600">
+                        {prCount} PR{prCount === 1 ? '' : 's'} · {merged} merged
+                      </span>
+                    )}
+                  </div>
                 </div>
               </a>
             ))}

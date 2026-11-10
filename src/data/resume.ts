@@ -68,13 +68,22 @@ export const skills = {
 
 export const openSourceContributions: OpenSourceContribution[] = [
   {
+    githubOrg: 'grafana',
     project: 'Grafana',
     org: 'Grafana Labs',
     description:
       'Contributed to Grafana open source, the leading observability and data visualisation platform used by millions of engineers worldwide.',
     type: 'Open Source Contributor',
     url: 'https://github.com/grafana/grafana',
-    icon: 'grafana',
+  },
+  {
+    githubOrg: 'VictoriaMetrics',
+    project: 'VictoriaTraces',
+    org: 'VictoriaMetrics',
+    description:
+      'Contributing to VictoriaTraces, the open source distributed tracing database from VictoriaMetrics, built for high-volume trace storage and querying.',
+    type: 'Open Source Contributor',
+    url: 'https://github.com/VictoriaMetrics/VictoriaTraces',
   },
 ]
 
